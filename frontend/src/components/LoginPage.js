@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styles from './LoginRegister.module.css';
 import { useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 const LoginPage = () => {
   const [username, setUsername] = useState('');
@@ -21,8 +22,8 @@ const LoginPage = () => {
 
       if (response.ok) {
         const data = await response.json();
-        console.log('User logged in successfully');
-        // localStorage.setItem('token', data.token); // Store the token in local storage
+        Cookies.set('token', data.token);
+        // console.log('User logged in successfully');
         navigate('/');
       } else {
         console.error('Error logging in:', response.status);

@@ -1,7 +1,15 @@
 import React from 'react';
 import './Header.css';
+import Cookies from 'js-cookie';
 
 const Header = () => {
+  const token = Cookies.get('token');
+
+  const handleLogout = () => {
+    Cookies.remove('token');
+    window.location.href = '/';
+  }
+
   return (
     <header className="header">
       <a href="/" className="header__logo" >Synesthesic</a>
@@ -11,7 +19,15 @@ const Header = () => {
       <nav className="header__nav">
         <a href="/">Home</a>
         <a href="/following">Following</a>
-        <a href='/login'>Login</a>
+        {token ? (
+          <>
+            <a href="/create-post">Create</a>
+            <a href="#" onClick={handleLogout}>Logout</a>
+          </>
+        ) : (
+          <a href="/login">Login</a>
+        )}
+        {/* <a href='/login'>Login</a> */}
       </nav>
     </header>
   );

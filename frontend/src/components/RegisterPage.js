@@ -20,7 +20,7 @@ const RegisterPage = () => {
       });
 
       if (response.ok) {
-        console.log('User registered successfully');
+        // console.log('User registered successfully');
         navigate('/login');
       } else {
         console.error('Error registering user:', response.status);

@@ -34,8 +34,8 @@ app.post('/login', async (req, res) => {
     if (!user) return res.status(400).send('User not found');
 
     if (await bcrypt.compare(req.body.password, user.password)) {
-        const token = jwt.sign({ username: user.username }, config.secret, { expiresIn: '4h' }); // FIXME - token not being saved in cookies
-        res.cookie('token', token, { httpOnly: true }).status(200).json({ token});
+        const token = jwt.sign({ username: user.username }, config.secret, { expiresIn: '4h' }); // REVIEW - might have to make middleware to check token cause of the way we are giving it in react
+        res.cookie('token', token, { httpOnly: true }).status(200).json({token});
     } else {
         res.status(401).send('Invalid password');
     }
