@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 const RegisterPage = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
@@ -23,6 +24,9 @@ const RegisterPage = () => {
         navigate('/login');
       } else {
         console.error('Error registering user:', response.status);
+        setErrorMessage(await response.text() || response.statusText);
+        setUsername('');
+        setPassword('');
       }
     } catch (error) {
       console.error(error);
@@ -32,6 +36,7 @@ const RegisterPage = () => {
   return (
     <div className={styles.page}>
       <h2 className={styles.h2}>Register</h2>
+      {errorMessage && <div className={styles.error}>{errorMessage}</div>}
       <form onSubmit={handleSubmit}>
         <div className={styles.field}>
           <label className={styles.label}>Username</label>

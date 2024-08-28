@@ -46,6 +46,10 @@
   cursor: pointer;
 }
 
+.error {
+  color: #ff0000;
+}
+
 .button:active {
   background-color: #b4b4b4;
 }

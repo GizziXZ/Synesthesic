@@ -6,12 +6,12 @@ import Post from './Post';
 const HomePage = () => {
   const [posts, setPosts] = useState([]);
 
-  useEffect(() => {
-    fetch('http://localhost:80/posts')
-      .then(response => response.json())
-      .then(data => setPosts(data))
-      .catch(error => console.error('Error fetching data:', error));
-  }, []);
+//   useEffect(() => {
+//     fetch('http://localhost:80/posts')
+//       .then(response => response.json())
+//       .then(data => setPosts(data))
+//       .catch(error => console.error('Error fetching data:', error));
+//   }, []);
 
   return (
     <div>
