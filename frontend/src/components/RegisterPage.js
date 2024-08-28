@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import styles from './LoginRegister.module.css';
+import { useNavigate } from 'react-router-dom';
 
-const RegisterPage = ({ onRegister }) => {
+const RegisterPage = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -18,9 +20,9 @@ const RegisterPage = ({ onRegister }) => {
 
       if (response.ok) {
         console.log('User registered successfully');
-        onRegister();
+        navigate('/login');
       } else {
-        console.error('Error registering user');
+        console.error('Error registering user:', response.status);
       }
     } catch (error) {
       console.error(error);
