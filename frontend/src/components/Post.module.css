@@ -1,9 +1,13 @@
 .post {
-  background: #fff;
+  background-color: #fff;
   border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  margin-bottom: 16px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   overflow: hidden;
+  transition: transform 0.2s;
+}
+
+.post:hover {
+  transform: translateY(-5px);
 }
 
 .image {
@@ -12,11 +16,11 @@
 }
 
 .title {
-  font-size: 1.2rem;
-  margin: 8px;
+  font-size: 1.2em;
+  margin: 16px;
 }
 
 .description {
-  font-size: 1rem;
-  margin: 8px;
+  margin: 0 16px 16px;
+  color: #555;
 }

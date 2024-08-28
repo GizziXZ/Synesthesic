@@ -1,16 +1,50 @@
 import React, { useState } from 'react';
 import Header from './Header';
 import styles from './CreatePost.module.css';
+import Cookies from 'js-cookie';
 
 const CreatePost = () => {
   const [title, setTitle] = useState('');
   const [spotifyLink, setSpotifyLink] = useState('');
   const [image, setImage] = useState(null);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission logic here
-    console.log({ title, spotifyLink, image });
+
+    const token = Cookies.get('token');
+    if (!token) {
+      alert('You must be logged in to create a post.');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('title', title);
+    formData.append('spotifyLink', spotifyLink);
+    formData.append('image', image);
+
+    try {
+      const response = await fetch('http://localhost:80/post', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+        body: formData,
+      });
+
+      if (response.ok) {
+        alert('Post created successfully!');
+        // NOTE - afterwards we want to redirect to the post page, but for now we'll just clear the form
+        setTitle('');
+        setSpotifyLink('');
+        setImage(null);
+      } else {
+        const errorData = await response.json();
+        alert(`Error: ${errorData.message}`);
+      }
+    } catch (error) {
+      console.error('Error creating post:', error);
+      alert('An error occurred while creating the post.');
+    }
   };
 
   const handleImageChange = (e) => {

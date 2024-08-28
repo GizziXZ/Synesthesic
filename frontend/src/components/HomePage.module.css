@@ -2,7 +2,14 @@ body {
     background-color: #202020;
 }
 
-.masonry-layout {
+.gridContainer {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 16px;
+    padding: 16px;
+}
+
+/* .masonry-layout {
     display: flex;
     flex-wrap: wrap;
     gap: 16px;
@@ -11,4 +18,4 @@ body {
 .masonry-layout > div {
     flex: 1 1 calc(33.333% - 16px);
     box-sizing: border-box;
-}
+} */

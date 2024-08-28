@@ -3,6 +3,7 @@ const config = require('./config.json');
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 const User = require('./models/users');
+const Post = require('./models/posts');
 const bcrypt = require('bcrypt');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -38,6 +39,30 @@ app.post('/login', async (req, res) => {
         res.cookie('token', token, { httpOnly: true }).status(200).json({token});
     } else {
         res.status(401).send('Invalid password');
+    }
+});
+
+app.post('/post', async (req, res) => {
+    const token = req.headers.authorization.split(' ')[1];
+    try {
+        const user = jwt.decode(token, config.secret).username;
+        if (!jwt.verify(token, config.secret)) return res.status(401).send('Invalid token');
+        const { title, spotifyLink, image } = req.body;
+        
+        if (!title || !spotifyLink || !image) {
+            return res.status(400).send('Missing required fields');
+        }
+
+        if (!/^https:\/\/open\.spotify\.com\/track\/[a-zA-Z0-9]{22}$/.test(spotifyLink)) {
+            return res.status(400).send('Invalid Spotify link');
+        }
+
+        const newPost = new Post({ title, spotifyLink, image, username: user });
+
+        await newPost.save();
+        res.status(201).send();
+    } catch (error) {
+        return res.status(401).send(error.message);
     }
 });
 
