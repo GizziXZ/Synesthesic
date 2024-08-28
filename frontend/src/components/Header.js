@@ -11,6 +11,7 @@ const Header = () => {
       <nav className="header__nav">
         <a href="/">Home</a>
         <a href="/following">Following</a>
+        <a href='/login'>Login</a>
       </nav>
     </header>
   );

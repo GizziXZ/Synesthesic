@@ -1,0 +1,42 @@
+.login-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: #202020;
+  text-align: center;
+}
+
+h2 {
+  color: #fff;
+}
+
+label {
+  color: #fff;
+}
+
+.login__field {
+  margin-bottom: 1rem;
+}
+
+.login__field label {
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.login__field input {
+  width: 100%;
+  padding: 0.5rem;
+  box-sizing: border-box;
+}
+
+button {
+  padding: 0.5rem 1rem;
+  border: none;
+  cursor: pointer;
+}
+
+button:active {
+  background-color: #b4b4b4;
+}

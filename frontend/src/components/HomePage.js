@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import './HomePage.css';
 import Header from './Header';
 
 const HomePage = () => {
@@ -14,7 +15,6 @@ const HomePage = () => {
   return (
     <div>
         <Header />
-        <h1>Home Page</h1>
         <p>{message}</p>
     </div>
   );
