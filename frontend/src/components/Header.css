@@ -1,0 +1,36 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  background-color: #181818;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.header__logo {
+  font-size: 24px;
+  font-weight: bold;
+  color: #8332cf;
+  text-decoration: none;
+}
+
+.header__search input {
+  width: 300px;
+  padding: 8px;
+  color: #ffffff;
+  background-color: #313131;
+  border: 1px solid #000000;
+  border-radius: 20px;
+  outline: none;
+}
+
+.header__nav a {
+  margin-left: 20px;
+  text-decoration: none;
+  color: #ffffff;
+  font-weight: 500;
+}
+
+.header__nav a:hover {
+  color: #e60023;
+}
