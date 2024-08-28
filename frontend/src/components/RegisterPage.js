@@ -5,11 +5,26 @@ const RegisterPage = ({ onRegister }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    // Perform Register logic here
-    console.log('Registering with', username, password);
-    onRegister();
+    try {
+      const response = await fetch('http://localhost:80/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
+      });
+
+      if (response.ok) {
+        console.log('User registered successfully');
+        onRegister();
+      } else {
+        console.error('Error registering user');
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -35,7 +50,7 @@ const RegisterPage = ({ onRegister }) => {
         <button type="submit" className={styles.button}>Register</button>
       </form>
       <a href="/login" className={styles.a}>Login here</a>
-      </div>
+    </div>
   );
 };
 
