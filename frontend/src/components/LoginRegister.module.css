@@ -1,4 +1,4 @@
-.login-page {
+.page {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -8,35 +8,44 @@
   text-align: center;
 }
 
-h2 {
+.h2 {
   color: #fff;
 }
 
-label {
+.a {
+  color: #fff;
+  position: absolute;
+  bottom: 1rem;
+  text-decoration: none;
+}
+
+.label {
   color: #fff;
 }
 
-.login__field {
+.field {
   margin-bottom: 1rem;
 }
 
-.login__field label {
+.field label {
   display: block;
   margin-bottom: 0.5rem;
 }
 
-.login__field input {
+.field input {
   width: 100%;
   padding: 0.5rem;
+  border-radius: 0.5rem;
   box-sizing: border-box;
 }
 
-button {
+.button {
   padding: 0.5rem 1rem;
+  border-radius: 0.3rem;
   border: none;
   cursor: pointer;
 }
 
-button:active {
+.button:active {
   background-color: #b4b4b4;
 }
