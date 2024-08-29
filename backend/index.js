@@ -6,6 +6,8 @@ const User = require('./models/users');
 const Post = require('./models/posts');
 const bcrypt = require('bcrypt');
 const bodyParser = require('body-parser');
+const multer = require('multer');
+const upload = multer();
 const cors = require('cors');
 
 mongoose.connect(config.mongooseConnection + 'Synesthesic', {
@@ -52,22 +54,22 @@ app.post('/login', async (req, res) => {
     }
 });
 
-app.post('/post', async (req, res) => {
+app.post('/post', upload.fields([{name: 'title', maxCount: 1}, {name: 'spotifyLink', maxCount: 1}, {name: 'image', maxCount: 1}]), async (req, res) => {
     const token = req.headers.authorization.split(' ')[1];
     try {
         const user = jwt.decode(token, config.secret).username;
         if (!jwt.verify(token, config.secret)) return res.status(401).send('Invalid token');
-        const { title, spotifyLink, image } = req.body;
-        
+        const { title, spotifyLink } = req.body;
+        const image = req.files.image[0];
         if (!title || !spotifyLink || !image) {
             return res.status(400).send('Missing required fields');
         }
 
-        if (!/^https:\/\/open\.spotify\.com\/track\/[a-zA-Z0-9]{22}$/.test(spotifyLink)) {
+        if (!/https:\/\/open.spotify.com\/track\/([a-zA-Z0-9]+)(\?si=[a-zA-Z0-9]+)?/g.test(spotifyLink)) {
             return res.status(400).send('Invalid Spotify link');
         }
 
-        const newPost = new Post({ title, spotifyLink, image, username: user });
+        const newPost = new Post({ title, spotifyLink, username: user, image });
 
         await newPost.save();
         res.status(201).send();

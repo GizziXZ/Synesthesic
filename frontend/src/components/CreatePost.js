@@ -7,6 +7,7 @@ const CreatePost = () => {
   const [title, setTitle] = useState('');
   const [spotifyLink, setSpotifyLink] = useState('');
   const [image, setImage] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -21,6 +22,8 @@ const CreatePost = () => {
     formData.append('title', title);
     formData.append('spotifyLink', spotifyLink);
     formData.append('image', image);
+
+    setLoading(true);
 
     try {
       const response = await fetch('http://localhost:80/post', {
@@ -42,8 +45,10 @@ const CreatePost = () => {
         alert(`Error: ${errorData.message}`);
       }
     } catch (error) {
-      console.error('Error creating post:', error);
+      console.error(error);
       alert('An error occurred while creating the post.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -56,7 +61,7 @@ const CreatePost = () => {
       <Header />
       <div className={styles.createPostContainer}>
         <h2>Create a New Post</h2>
-        <form onSubmit={handleSubmit} className={styles.createPostForm}>
+        <form onSubmit={handleSubmit} className={styles.createPostForm} encType='multipart/form-data'>
           <div className={styles.formGroup}>
             <label htmlFor="title">Title</label>
             <input
@@ -87,7 +92,10 @@ const CreatePost = () => {
               required
             />
           </div>
-          <button type="submit" className={styles.submitButton}>Create Post</button>
+          {/* <button type="submit" className={styles.submitButton}>Create Post</button> */}
+          <button type="submit" className={styles.submitButton} disabled={loading}>
+            {loading ? 'Creating...' : 'Create Post'}
+          </button>
         </form>
       </div>
     </div>
