@@ -8,8 +8,6 @@ const PostPage = () => {
   const [post, setPost] = useState(null);
   const [isActive, setIsActive] = useState('');
   const [isSpotifyLoaded, setIsSpotifyLoaded] = useState(false);
-    const [spotifyController, setSpotifyController] = useState(null);
-  const [IFrameAPI, setIFrameAPI] = useState(null);
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -26,25 +24,15 @@ const PostPage = () => {
   }, [id]);
 
   useEffect(() => {
-    const script = document.createElement('script');
-    script.src = 'https://open.spotify.com/embed/iframe-api/v1';
-    script.async = true;
-    script.onload = () => {
-      window.onSpotifyIframeApiReady = (IFrameAPI) => {
-        setIFrameAPI(IFrameAPI);
-        const spotifyIframe = document.querySelector('iframe[src*="spotify.com/embed"]');
-        if (spotifyIframe) {
-          IFrameAPI.createController(spotifyIframe, (controller) => {
-            setSpotifyController(controller);
-            setIsSpotifyLoaded(true);
-          });
-        }
-      };
-    };
-    document.body.appendChild(script);
+    const spotifyIframe = document.querySelector('iframe[src*="spotify.com/embed"]');
+    if (spotifyIframe) {
+      spotifyIframe.addEventListener('load', () => {
+        setIsSpotifyLoaded(true);
+      });
+    }
   }, [post]);
 
-  if (!post) { // loading screen
+  if (!post) {
     return <div></div>;
   }
 
@@ -54,17 +42,15 @@ const PostPage = () => {
 
     const spotifyEmbed = post.spotifyLink.replace(
       spotifyPattern,
-      '<iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/$1#0:39" width="80%" height="152" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture;" loading="lazy"></iframe>'
+      // oh my god it actually took me an entire hour to figure out how to do the starting timestamp, i need to add ?utm_source=generator&t=number to the end of the src
+      '<iframe id="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/track/$1?utm_source=generator" width="80%" height="152" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture;" loading="lazy"></iframe>' 
     );
 
     const handleClick = () => {
         if (isSpotifyLoaded) {
             const spotifyEmbedIframe = document.querySelector('iframe[src*="spotify.com/embed"]');
             const spotifyEmbedWindow = spotifyEmbedIframe.contentWindow;
-            // spotifyEmbedWindow.postMessage({ command: 'resume' }, '*');
-            IFrameAPI.createController(spotifyEmbedIframe, (controller) => {
-                controller.play();
-            });
+            spotifyEmbedWindow.postMessage({ command: 'resume' }, '*');
             setIsActive(true);
         }
     };
