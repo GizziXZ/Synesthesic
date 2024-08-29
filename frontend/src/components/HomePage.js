@@ -23,16 +23,19 @@ const HomePage = () => {
   return (
     <div>
       <Header />
-      <div className={styles.gridContainer}>
-        {posts.map((post) => (
-          <Post
-            image={post.image}
-            title={post.title}
-            createdAt={post.createdAt}
-            spotifyLink={post.spotifyLink}
-            username={post.username}
-          />
-        ))}
+      <div className={styles.masonrylayout}>
+        {posts.map((post) => {
+          const imageUrl = `data:${post.image.mimetype};base64,${post.image.buffer}`;
+          return (
+            <Post
+              image={imageUrl}
+              title={post.title}
+              createdAt={post.createdAt}
+              spotifyLink={post.spotifyLink}
+              username={post.username}
+            />
+          );
+        })}
       </div>
     </div>
   );

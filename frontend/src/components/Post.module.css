@@ -17,10 +17,20 @@
 
 .title {
   font-size: 1.2em;
-  margin: 16px;
+  margin-top: 3px;
+  margin-left: 10px;
 }
 
-.description {
-  margin: 0 16px 16px;
-  color: #555;
+.username {
+  margin-top: -12px;
+  margin-left: 10px;
+  color: #333;
+  font-weight: bold;
+}
+
+.createdAt {
+  margin-top: -12px;
+  margin-left: 10px;
+  color: #777;
+  font-size: 0.9em;
 }

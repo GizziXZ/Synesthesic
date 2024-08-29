@@ -9,13 +9,17 @@ body {
     padding: 16px;
 }
 
-/* .masonry-layout {
+.masonrylayout {
     display: flex;
     flex-wrap: wrap;
     gap: 16px;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 16px;
 }
 
-.masonry-layout > div {
+.masonrylayout > div {
     flex: 1 1 calc(33.333% - 16px);
+    max-width: 15vw;
     box-sizing: border-box;
-} */
+}
