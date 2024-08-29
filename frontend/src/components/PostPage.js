@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Header from './Header';
+import styles from './PostPage.module.css';
 
 const PostPage = () => {
   const { id } = useParams();
@@ -20,18 +21,24 @@ const PostPage = () => {
     fetchPost();
   }, [id]);
 
+  if (!post) {
+    return <div>Loading...</div>;
+  }
+
   const imageUrl = `data:${post.image.mimetype};base64,${post.image.buffer}`;
 
   return (
     <div>
-      <Header />
-      <div>
-        <img src={imageUrl} alt={post.title} />
-        <h1>{post.title}</h1>
-        <p>{post.createdAt}</p>
-        <a href={post.spotifyLink}>Listen on Spotify</a>
-        <p>Posted by {post.username}</p>
-      </div>
+    <Header />
+      <div className={styles.container}>
+        <div className={styles.header}>
+            <img className={styles.image} src={imageUrl} alt={post.title} />
+            <h1 className={styles.title}>{post.title}</h1>
+            <p className={styles.date}>{new Date(post.createdAt).toLocaleString()}</p>
+            <a className={styles.spotifyLink} href={post.spotifyLink}>Listen on Spotify</a>
+            <p className={styles.username}>Posted by {post.username}</p>
+        </div>
+    </div>
     </div>
   );
 };

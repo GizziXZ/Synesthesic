@@ -30,6 +30,16 @@ app.get('/posts', async (req, res) => {
     }
 });
 
+app.get('/posts/:id', async (req, res) => {
+    try {
+        const post = await Post.findOne({ id: req.params.id });
+        res.status(200).json(post);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send(error.message);
+    }
+});
+
 app.post('/register', async (req, res) => {
     if (await User.findOne({ username: req.body.username })) {
         return res.status(400).send('User already exists');

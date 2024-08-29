@@ -1,6 +1,13 @@
 const mongoose = require('mongoose');
+const { randomBytes } = require('crypto');
 
 const postSchema = new mongoose.Schema({
+    id: {
+        type: String,
+        required: true,
+        unique: true,
+        default: randomBytes(16).toString('hex'),
+    },
     title: {
         type: String,
         required: true,
