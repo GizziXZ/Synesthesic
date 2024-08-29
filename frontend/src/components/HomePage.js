@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import styles from './HomePage.module.css';
 import Header from './Header';
 import Post from './Post';
@@ -16,7 +17,6 @@ const HomePage = () => {
         console.error('Error fetching posts:', error);
       }
     };
-
     fetchPosts();
   }, []);
 
@@ -27,13 +27,15 @@ const HomePage = () => {
         {posts.map((post) => {
           const imageUrl = `data:${post.image.mimetype};base64,${post.image.buffer}`;
           return (
-            <Post
-              image={imageUrl}
-              title={post.title}
-              createdAt={post.createdAt}
-              spotifyLink={post.spotifyLink}
-              username={post.username}
-            />
+            <Link to={`/post/${post.id}`} key={post.id} className={styles.masonryItem}>
+              <Post
+                image={imageUrl}
+                title={post.title}
+                createdAt={post.createdAt}
+                spotifyLink={post.spotifyLink}
+                username={post.username}
+              />
+            </Link>
           );
         })}
       </div>

@@ -18,8 +18,12 @@ body {
     padding: 16px;
 }
 
-.masonrylayout > div {
+.masonryItem {
     flex: 1 1 calc(33.333% - 16px);
     max-width: 15vw;
     box-sizing: border-box;
+    margin-bottom: 16px;
+    text-decoration: none;
+    text-decoration-color: none;
+    color: inherit;
 }

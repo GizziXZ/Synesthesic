@@ -1,6 +1,7 @@
 import React from 'react';
 import './Header.css';
 import Cookies from 'js-cookie';
+import { jwtDecode } from 'jwt-decode';
 
 const Header = () => {
   const token = Cookies.get('token');
@@ -22,6 +23,7 @@ const Header = () => {
         {token ? (
           <>
             <a href="/create-post">Create</a>
+            <a>{jwtDecode(token).username}</a>
             <a href="#" onClick={handleLogout}>Logout</a>
           </>
         ) : (
