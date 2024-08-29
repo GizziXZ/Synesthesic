@@ -20,12 +20,8 @@
   background-color: rgba(0, 0, 0, 0.5);
   padding: 10px 20px;
   border-radius: 5px;
-  display: none;
-  z-index: 1;
-}
-
-.container:not(.active) .overlayText {
   display: block;
+  z-index: 1;
 }
 
 .header {
@@ -42,7 +38,8 @@
 
 .title {
   font-size: 2em;
-  margin-bottom: 10px;
+  margin-top:  -16px;
+  margin-bottom: -8px;
 }
 
 .date {

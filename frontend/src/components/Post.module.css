@@ -1,6 +1,7 @@
 .post {
   background-color: #fff;
   border-radius: 8px;
+  background-color: #252525;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   transition: transform 0.2s;
@@ -16,15 +17,16 @@
 }
 
 .title {
+  color: #ffffffce;
   font-size: 1.2em;
   margin-top: 3px;
   margin-left: 10px;
 }
 
 .username {
+  color: #ffffff9c;
   margin-top: -12px;
   margin-left: 10px;
-  color: #333;
   font-weight: bold;
 }
 

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Header from './Header';
+import moment from 'moment';
 import styles from './PostPage.module.css';
 
 const PostPage = () => {
@@ -52,6 +53,10 @@ const PostPage = () => {
             const spotifyEmbedWindow = spotifyEmbedIframe.contentWindow;
             spotifyEmbedWindow.postMessage({ command: 'resume' }, '*');
             setIsActive(true);
+
+            // hide overlay text
+            const overlayText = document.querySelector(`.${styles.overlayText}`);
+            if (overlayText) overlayText.style.display = 'none';
         }
     };
 
@@ -59,14 +64,14 @@ const PostPage = () => {
     <div>
     <Header />
     <div className={styles.box}>
-    <div className={styles.overlayText}>Click to view</div>
+        <div className={styles.overlayText} onClick={handleClick}>Click to view</div>
         <div className={`${styles.container} ${isActive ? styles.active : ''}`} onClick={handleClick}>
         <div className={styles.header}>
             <img className={styles.image} src={imageUrl} alt={post.title} />
             <h1 className={styles.title}>{post.title}</h1>
-            <p className={styles.date}>{new Date(post.createdAt).toLocaleString()}</p>
+            <p className={styles.date}>{moment(post.createdAt).calendar()}</p>
             <div dangerouslySetInnerHTML={{ __html: spotifyEmbed }} />
-            <a className={styles.spotifyLink} href={post.spotifyLink}>Listen on Spotify</a>
+            <a className={styles.spotifyLink} href={post.spotifyLink}>Spotify</a>
             <p className={styles.username}>Posted by {post.username}</p>
         </div>
         </div>
