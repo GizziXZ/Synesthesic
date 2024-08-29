@@ -18,6 +18,16 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors());
 
+app.get('/posts', async (req, res) => {
+    try {
+        const posts = await Post.find();
+        res.status(200).json(posts);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send(error.message);
+    }
+});
+
 app.post('/register', async (req, res) => {
     if (await User.findOne({ username: req.body.username })) {
         return res.status(400).send('User already exists');
@@ -35,7 +45,7 @@ app.post('/login', async (req, res) => {
     if (!user) return res.status(400).send('User not found');
 
     if (await bcrypt.compare(req.body.password, user.password)) {
-        const token = jwt.sign({ username: user.username }, config.secret, { expiresIn: '4h' }); // REVIEW - might have to make middleware to check token cause of the way we are giving it in react
+        const token = jwt.sign({ username: user.username }, config.secret, { expiresIn: '4h' });
         res.cookie('token', token, { httpOnly: true }).status(200).json({token});
     } else {
         res.status(401).send('Invalid password');
@@ -62,6 +72,7 @@ app.post('/post', async (req, res) => {
         await newPost.save();
         res.status(201).send();
     } catch (error) {
+        console.error(error);
         return res.status(401).send(error.message);
     }
 });

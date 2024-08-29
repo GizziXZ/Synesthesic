@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Cookies from 'js-cookie';
+import { jwtDecode } from 'jwt-decode';
 import HomePage from './components/HomePage';
 import LoginPage from './components/LoginPage';
 import RegisterPage from './components/RegisterPage';
@@ -11,6 +13,23 @@ function App() {
   const handleLogin = () => {
     setIsLoggedIn(true);
   };
+
+  const isTokenValid = () => {
+    const token = Cookies.get('token');
+    if (!token) return false;
+    const decodedToken = jwtDecode(token);
+    const currentTime = Date.now() / 1000;
+    return decodedToken.exp > currentTime;
+  }
+
+  useEffect(() => {
+    if (isTokenValid()) {
+      setIsLoggedIn(true);
+    } else {
+      Cookies.remove('token');
+      setIsLoggedIn(false);
+    }
+  });
 
   return (
     <Router>
