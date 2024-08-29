@@ -2,9 +2,13 @@
   padding: 20px;
   max-width: 800px;
   margin: 0 auto;
+  filter: blur(10px);
   color: #fff;
 }
 
+.container.active {
+  filter: none;
+}
 .header {
   text-align: center;
   margin-bottom: 20px;
@@ -44,5 +48,7 @@
   max-width: 35vw;
   padding: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  border: #4e4e4e 1px solid;
   margin: 20px auto;
 }
