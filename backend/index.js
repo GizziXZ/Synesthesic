@@ -64,14 +64,14 @@ app.post('/login', async (req, res) => {
     }
 });
 
-app.post('/post', upload.fields([{name: 'title', maxCount: 1}, {name: 'spotifyLink', maxCount: 1}, {name: 'image', maxCount: 1}]), async (req, res) => {
+app.post('/post', upload.fields([{name: 'title', maxCount: 1}, {name: 'spotifyLink', maxCount: 1}, {name: 'timestamp', maxCount: 1}, {name: 'image', maxCount: 1}]), async (req, res) => {
     const token = req.headers.authorization.split(' ')[1];
     try {
         const user = jwt.decode(token, config.secret).username;
         if (!jwt.verify(token, config.secret)) return res.status(401).send('Invalid token');
-        const { title, spotifyLink } = req.body;
+        const { title, spotifyLink, timestamp } = req.body;
         const image = req.files.image[0];
-        if (!title || !spotifyLink || !image) {
+        if (!title || !spotifyLink || !timestamp || !image) {
             return res.status(400).send('Missing required fields');
         }
 
@@ -79,7 +79,8 @@ app.post('/post', upload.fields([{name: 'title', maxCount: 1}, {name: 'spotifyLi
             return res.status(400).send('Invalid Spotify link');
         }
 
-        const newPost = new Post({ title, spotifyLink, username: user, image });
+        const totalSeconds = timestamp.split(':').reduce((acc, time) => 60 * acc + +time, 0);
+        const newPost = new Post({ title, spotifyLink, timestamp: totalSeconds , username: user, image });
 
         await newPost.save();
         res.status(201).send();

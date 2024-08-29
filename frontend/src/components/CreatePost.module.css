@@ -16,6 +16,8 @@
 
 .formGroup {
     margin-bottom: 15px;
+    display: flex;
+    align-items: center;
 }
 
 .formGroup label {
@@ -41,4 +43,25 @@
 
 .submitButton:hover {
     background-color: #0056b3;
+}
+
+.timestampInputs {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.timestampInputs input {
+    width: 50px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.timestampInputs span {
+    margin-left: 3px;
+    margin-right: -8px;
+    font-size: 1.2em;
+    color: #fff;
 }

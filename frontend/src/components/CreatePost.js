@@ -2,16 +2,20 @@ import React, { useState } from 'react';
 import Header from './Header';
 import styles from './CreatePost.module.css';
 import Cookies from 'js-cookie';
+import { useNavigate } from 'react-router-dom';
 
 const CreatePost = () => {
   const [title, setTitle] = useState('');
   const [spotifyLink, setSpotifyLink] = useState('');
+  const [minutes, setMinutes] = useState('');
+  const [seconds, setSeconds] = useState('');
   const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    const timestamp = `${minutes}:${seconds}`;
     const token = Cookies.get('token');
     if (!token) {
       alert('You must be logged in to create a post.');
@@ -21,6 +25,7 @@ const CreatePost = () => {
     const formData = new FormData();
     formData.append('title', title);
     formData.append('spotifyLink', spotifyLink);
+    formData.append('timestamp', timestamp);
     formData.append('image', image);
 
     setLoading(true);
@@ -82,6 +87,31 @@ const CreatePost = () => {
               required
             />
           </div>
+        <div className={styles.formGroup}>
+        <label htmlFor="timestamp">Timestamp</label>
+        <div className={styles.timestampInputs}>
+          <input
+            type="number"
+            id="minutes"
+            placeholder="MM"
+            value={minutes}
+            onChange={(e) => setMinutes(e.target.value)}
+            min="0"
+            required
+          />
+          <span>:</span>
+          <input
+            type="number"
+            id="seconds"
+            placeholder="SS"
+            value={seconds}
+            onChange={(e) => setSeconds(e.target.value)}
+            min="0"
+            max="59"
+            required
+          />
+        </div>
+        </div>
           <div className={styles.formGroup}>
             <label htmlFor="image">Upload Image</label>
             <input

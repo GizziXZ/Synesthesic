@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const { randomBytes } = require('crypto');
+const { time } = require('console');
 
 const postSchema = new mongoose.Schema({
     id: {
@@ -14,6 +15,10 @@ const postSchema = new mongoose.Schema({
     },
     spotifyLink: {
         type: String,
+        required: true,
+    },
+    timestamp: {
+        type: Number,
         required: true,
     },
     username: {
