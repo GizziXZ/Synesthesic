@@ -22,7 +22,6 @@ app.use(cors());
 
 app.get('/profile/:username', async (req, res) => {
     try {
-        console.log(req.params.username)
         const user = await User.findOne({ username: req.params.username }, { password: 0, _id: 0 });
         res.status(200).json(user);
     } catch (error) {
@@ -41,7 +40,17 @@ app.get('/posts', async (req, res) => {
     }
 });
 
-app.get('/posts/:id', async (req, res) => {
+app.get('/posts/:username', async (req, res) => {
+    try {
+        const posts = await Post.find({ username: req.params.username });
+        res.status(200).json(posts);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send(error.message);
+    }
+});
+
+app.get('/post/:id', async (req, res) => {
     try {
         const post = await Post.findOne({ id: req.params.id });
         res.status(200).json(post);
@@ -101,7 +110,7 @@ app.post('/post', upload.fields([{name: 'title', maxCount: 1}, {name: 'spotifyLi
     }
 });
 
-app.post('/posts/:id/like', async (req, res) => {
+app.post('/post/:id/like', async (req, res) => {
     try {
         const token = req.headers.authorization.split(' ')[1];
         const post = await Post.findOne({ id: req.params.id });

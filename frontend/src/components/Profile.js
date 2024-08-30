@@ -16,7 +16,7 @@ const Profile = () => {
     useEffect(() => {
         const fetchPosts = async () => {
             try {
-                const response = await fetch(`http://localhost:80/posts/${username}`); // TODO change to fetch the specific user's posts
+                const response = await fetch(`http://localhost:80/posts/${username}`);
                 const data = await response.json();
                 const token = Cookies.get('token');
                 if (token) {
@@ -57,11 +57,15 @@ const Profile = () => {
     }
 
     return (
-        <div className={styles.profile}>
-        <Header />
-            <h1>{profile.username}</h1>
-            <h3>{profile.bio}</h3>
-            <div className={styles.posts}>
+        <div>
+            <Header />
+            {/* <img src={`data:${profile.image.mimetype};base64,${profile.image.buffer}`} alt={profile.username} className={styles.image} /> */}
+            <div className={styles.profile}>
+                <h1 className={styles.username}>{profile.username}</h1>
+                <h3 className={styles.bio}>{profile.bio ? profile.bio.trim() : "No bio exists of this person :("}</h3>
+            </div>
+            <hr style={styles.hr}></hr>
+            <div className={styles.masonrylayout}>
             {posts.map((post) => {
             const imageUrl = `data:${post.image.mimetype};base64,${post.image.buffer}`;
             return (

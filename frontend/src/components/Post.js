@@ -14,7 +14,7 @@ const Post = ({ id, image, title, username, createdAt, likes, liked }) => {
         return alert('You must be logged in to like a post');
       }
 
-      const response = await fetch(`http://localhost:80/posts/${id}/like`, {
+      const response = await fetch(`http://localhost:80/post/${id}/like`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

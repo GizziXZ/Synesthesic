@@ -13,7 +13,7 @@ const PostPage = () => {
   useEffect(() => {
     const fetchPost = async () => {
       try {
-        const response = await fetch(`http://localhost:80/posts/${id}`);
+        const response = await fetch(`http://localhost:80/post/${id}`);
         const data = await response.json();
         setPost(data);
       } catch (error) {
