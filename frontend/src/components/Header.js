@@ -19,9 +19,9 @@ const Header = () => {
       </div>
       <nav className="header__nav">
         <a href="/">Home</a>
-        <a href="/following">Following</a>
         {token ? (
           <>
+            <a href="/following">Following</a>
             <a href="/create-post">Create</a>
             <a href={'/user/' + jwtDecode(token).username}>{jwtDecode(token).username}</a>
             <a href="#" onClick={handleLogout}>Logout</a>

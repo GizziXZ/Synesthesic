@@ -1,0 +1,21 @@
+.followingContainer {
+  padding: 20px;
+}
+
+.followingList {
+  list-style-type: none;
+  padding: 0;
+}
+
+.followingItem {
+  margin: 10px 0;
+}
+
+.followingItem a {
+  text-decoration: none;
+  color: #007bff;
+}
+
+.followingItem a:hover {
+  text-decoration: underline;
+}

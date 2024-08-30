@@ -131,6 +131,29 @@ app.post('/post/:id/like', async (req, res) => {
     }
 });
 
+app.post('/profile/:username/follow', async (req, res) => {
+    try {
+        const token = req.headers.authorization.split(' ')[1];
+        const user = await User.findOne({ username: req.params.username });
+        const follower = await User.findOne({ username: jwt.decode(token, config.secret).username });
+        if (!user) return res.status(404).send('User not found');
+        if (!jwt.verify(token, config.secret)) return res.status(401).send('Invalid token');
+        if (!user.followers.includes(jwt.decode(token, config.secret).username)) {
+            user.followers.push(jwt.decode(token, config.secret).username);
+            follower.following.push(req.params.username);
+        } else {
+            user.followers = user.followers.filter((follower) => follower !== jwt.decode(token, config.secret).username);
+            follower.following = follower.following.filter((followed) => followed !== req.params.username);
+        }
+        await user.save();
+        await follower.save();
+        res.status(200).json({ followers: user.followers });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send(error.message);
+    }
+});
+
 app.put('/profile', upload.fields([{name: 'bio', maxCount: 1}, {name: 'spotifyLink', maxCount: 1}]), async (req, res) => {
     try {
         const token = req.headers.authorization.split(' ')[1];

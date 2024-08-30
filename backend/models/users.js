@@ -9,6 +9,14 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    following: {
+        type: [String],
+        default: [],
+    },
+    followers: {
+        type: [String],
+        default: [],
+    },
     bio: {
         type: String,
         default: '',

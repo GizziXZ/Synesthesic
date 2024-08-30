@@ -4,11 +4,13 @@ import { jwtDecode } from "jwt-decode";
 import styles from "./EditProfile.module.css";
 import Cookies from "js-cookie";
 import Header from "./Header";
+import { useNavigate } from "react-router-dom";
 
 const EditProfile = () => {
     const [profile, setProfile] = useState(null);
     const [song, setSong] = useState("");
     const [bio, setBio] = useState("");
+    const navigate = useNavigate();
     
     useEffect(() => {
         const fetchProfile = async () => {
@@ -49,6 +51,7 @@ const EditProfile = () => {
             }
 
             alert("Profile updated successfully!");
+            navigate("/user/" + jwtDecode(Cookies.get("token")).username);
         } catch (error) {
             console.error("Error updating profile:", error);
         }

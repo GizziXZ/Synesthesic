@@ -49,7 +49,7 @@ const HomePage = () => {
                 title={post.title}
                 createdAt={post.createdAt}
                 spotifyLink={post.spotifyLink}
-                username={post.username} // TODO - add reference to user's profile here and inside the post itself
+                username={post.username}
                 likes={post.likes}
                 liked={post.liked}
               />

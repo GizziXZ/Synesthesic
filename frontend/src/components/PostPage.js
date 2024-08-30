@@ -49,14 +49,14 @@ const PostPage = () => {
 
     const handleClick = () => {
         if (isSpotifyLoaded) {
-            const spotifyEmbedIframe = document.querySelector('iframe[src*="spotify.com/embed"]');
-            const spotifyEmbedWindow = spotifyEmbedIframe.contentWindow;
-            spotifyEmbedWindow.postMessage({ command: 'resume' }, '*');
-            setIsActive(true);
+          const spotifyEmbedIframe = document.querySelector('iframe[src*="spotify.com/embed"]');
+          const spotifyEmbedWindow = spotifyEmbedIframe.contentWindow;
+          spotifyEmbedWindow.postMessage({ command: 'resume' }, '*');
+          setIsActive(true);
 
-            // hide overlay text
-            const overlayText = document.querySelector(`.${styles.overlayText}`);
-            if (overlayText) overlayText.style.display = 'none';
+          // hide overlay text
+          const overlayText = document.querySelector(`.${styles.overlayText}`);
+          if (overlayText) overlayText.style.display = 'none';
         }
     };
 
@@ -64,17 +64,17 @@ const PostPage = () => {
     <div>
     <Header />
     <div className={styles.box}>
-        <div className={styles.overlayText} onClick={handleClick}>Click to view</div>
-        <div className={`${styles.container} ${isActive ? styles.active : ''}`} onClick={handleClick}>
-        <div className={styles.header}>
-            <p className={styles.date}>{moment(post.createdAt).calendar()}</p>
-            <img className={styles.image} src={imageUrl} alt={post.title} />
-            <h1 className={styles.title}>{post.title}</h1>
-            <div dangerouslySetInnerHTML={{ __html: spotifyEmbed }} />
-            <a className={styles.spotifyLink} href={post.spotifyLink}>Spotify</a>
-            <p className={styles.username}>Posted by {post.username}</p>
-        </div>
-        </div>
+      <div className={styles.overlayText} onClick={handleClick}>Click to view</div>
+      <div className={`${styles.container} ${isActive ? styles.active : ''}`} onClick={handleClick}>
+      <div className={styles.header}>
+        <p className={styles.date}>{moment(post.createdAt).calendar()}</p>
+        <img className={styles.image} src={imageUrl} alt={post.title} />
+        <h1 className={styles.title}>{post.title}</h1>
+        <div dangerouslySetInnerHTML={{ __html: spotifyEmbed }} />
+        <a className={styles.spotifyLink} href={post.spotifyLink}>Spotify</a>
+        <p className={styles.username}>Posted by <a href={`/user/${post.username}`} style={{color: 'gray'}}>{post.username}</a></p>
+      </div>
+      </div>
     </div>
     </div>
   );

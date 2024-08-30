@@ -48,6 +48,20 @@
     right: 10px;
 }
 
+.followButton {
+    padding: 10px 20px;
+    border: 1px solid #000000;
+    border-radius: 5px;
+    background-color: #ca1616;
+    color: #000;
+    font-size: 1em;
+    font-family: monospace;
+    cursor: pointer;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
 hr {
     width: 80%;
     border-color: #000;

@@ -70,6 +70,29 @@ const Profile = () => {
         navigate('/edit-profile');
     }
 
+    const handleFollowClick = async () => {
+        const token = Cookies.get('token');
+        if (!token) return navigate('/login');
+        try {
+            const response = await fetch(`http://localhost:80/profile/${username}/follow`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+            if (!response.ok) {
+                alert('Error following user:', response.statusText);
+                return;
+            }
+
+            alert('Successfully followed user!');
+        } catch (error) {
+            console.error('Error following user:', error);
+        }
+    }
+
     return (
         <div>
             <Header />
@@ -77,8 +100,10 @@ const Profile = () => {
             <div className={styles.profile}>
                 <div className={styles.profileHeader}>
                 <h1 className={styles.username}>{profile.username}</h1>
-                {Cookies.get('token') && jwtDecode(Cookies.get('token')).username === profile.username && (
+                {Cookies.get('token') && jwtDecode(Cookies.get('token')).username === profile.username ? (
                     <button className={styles.editButton} onClick={handleEditClick}>Edit</button>
+                ) : (
+                    <button className={styles.followButton} onClick={handleFollowClick}>Follow</button>
                 )}
                 </div>
                 <h3 className={styles.bio}>{profile.bio ? profile.bio.trim() : "No bio exists of this person :("}</h3>
