@@ -1,10 +1,12 @@
 .post {
   background-color: #fff;
   border-radius: 8px;
+  border: 1px solid #464646;
   background-color: #252525;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   transition: transform 0.2s;
+  position: relative;
 }
 
 .post:hover {
@@ -35,4 +37,10 @@
   margin-left: 10px;
   color: #777;
   font-size: 0.9em;
+}
+
+.heart {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
 }

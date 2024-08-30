@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styles from './HomePage.module.css';
+import postStyles from './Post.module.css';
 import Header from './Header';
 import Post from './Post';
 
@@ -20,6 +21,12 @@ const HomePage = () => {
     fetchPosts();
   }, []);
 
+  const handleLinkClick = (event) => {
+    if (event.target.closest(`.${postStyles.heart}`)) {
+      event.preventDefault();
+    }
+  }
+
   return (
     <div>
       <Header />
@@ -27,7 +34,7 @@ const HomePage = () => {
         {posts.map((post) => {
           const imageUrl = `data:${post.image.mimetype};base64,${post.image.buffer}`;
           return (
-            <Link to={`/post/${post.id}`} key={post.id} className={styles.masonryItem}>
+            <Link to={`/post/${post.id}`} key={post.id} className={styles.masonryItem} onClick={handleLinkClick}>
               <Post
                 image={imageUrl}
                 title={post.title}

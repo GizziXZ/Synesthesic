@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const { randomBytes } = require('crypto');
-const { time } = require('console');
 
 const postSchema = new mongoose.Schema({
     id: {
@@ -28,6 +27,10 @@ const postSchema = new mongoose.Schema({
     createdAt: {
         type: Date,
         default: Date.now,
+    },
+    likes: {
+        type: Number,
+        default: 0,
     },
     image: {
         type: Object,

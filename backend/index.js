@@ -90,6 +90,10 @@ app.post('/post', upload.fields([{name: 'title', maxCount: 1}, {name: 'spotifyLi
     }
 });
 
+app.post('/posts/:id/like', async (req, res) => {
+    // wip
+});
+
 app.listen(80, () => {
     console.log('Server started');
 });

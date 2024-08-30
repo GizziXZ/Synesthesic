@@ -44,7 +44,7 @@ const PostPage = () => {
     const spotifyEmbed = post.spotifyLink.replace(
       spotifyPattern,
       // oh my god it actually took me an entire hour to figure out how to do the starting timestamp, i need to add ?utm_source=generator&t=number to the end of the src
-      `<iframe id="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/track/$1?utm_source=generator&t=${post.timestamp}" width="80%" height="152" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture;" loading="lazy"></iframe>` 
+      `<iframe id="embed-iframe" style="border-radius:12px; margin-top: -10px;" src="https://open.spotify.com/embed/track/$1?utm_source=generator&t=${post.timestamp}" width="80%" height="152" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture;" loading="lazy"></iframe>` 
     );
 
     const handleClick = () => {
@@ -67,9 +67,9 @@ const PostPage = () => {
         <div className={styles.overlayText} onClick={handleClick}>Click to view</div>
         <div className={`${styles.container} ${isActive ? styles.active : ''}`} onClick={handleClick}>
         <div className={styles.header}>
+            <p className={styles.date}>{moment(post.createdAt).calendar()}</p>
             <img className={styles.image} src={imageUrl} alt={post.title} />
             <h1 className={styles.title}>{post.title}</h1>
-            <p className={styles.date}>{moment(post.createdAt).calendar()}</p>
             <div dangerouslySetInnerHTML={{ __html: spotifyEmbed }} />
             <a className={styles.spotifyLink} href={post.spotifyLink}>Spotify</a>
             <p className={styles.username}>Posted by {post.username}</p>
