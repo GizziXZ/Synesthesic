@@ -65,8 +65,8 @@ app.post('/login', async (req, res) => {
 });
 
 app.post('/post', upload.fields([{name: 'title', maxCount: 1}, {name: 'spotifyLink', maxCount: 1}, {name: 'timestamp', maxCount: 1}, {name: 'image', maxCount: 1}]), async (req, res) => {
-    const token = req.headers.authorization.split(' ')[1];
     try {
+        const token = req.headers.authorization.split(' ')[1];
         const user = jwt.decode(token, config.secret).username;
         if (!jwt.verify(token, config.secret)) return res.status(401).send('Invalid token');
         const { title, spotifyLink, timestamp } = req.body;
@@ -91,7 +91,24 @@ app.post('/post', upload.fields([{name: 'title', maxCount: 1}, {name: 'spotifyLi
 });
 
 app.post('/posts/:id/like', async (req, res) => {
-    // wip
+    try {
+        const token = req.headers.authorization.split(' ')[1];
+        const post = await Post.findOne({ id: req.params.id });
+        if (!post) return res.status(404).send('Post not found');
+        if (!jwt.verify(token, config.secret)) return res.status(401).send('Invalid token');
+        if (req.body.like) {
+            post.likes++;
+            post.likedBy.push(jwt.decode(token, config.secret).username);
+        } else {
+            post.likes--;
+            post.likedBy = post.likedBy.filter((user) => user !== jwt.decode(token, config.secret).username);
+        }
+        await post.save();
+        res.status(200).json({ likes: post.likes });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send(error.message);
+    }
 });
 
 app.listen(80, () => {

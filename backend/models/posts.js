@@ -32,6 +32,10 @@ const postSchema = new mongoose.Schema({
         type: Number,
         default: 0,
     },
+    likedBy: {
+        type: [String],
+        default: [],
+    },
     image: {
         type: Object,
         required: true,
