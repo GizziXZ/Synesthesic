@@ -5,7 +5,8 @@
     margin: 0 auto;
     margin-top: 20px;
     max-width: 1200px;
-    border: 1px solid #fff;
+    border: 1px solid #353535;
+    box-shadow: 0 0 10px #000;
     border-radius: 10px;
 }
 
@@ -49,6 +50,7 @@
 
 hr {
     width: 80%;
+    border-color: #000;
     margin-top: 35px;
     margin-bottom: 25px;
 }

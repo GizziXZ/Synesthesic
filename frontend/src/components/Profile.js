@@ -50,6 +50,16 @@ const Profile = () => {
         return <div></div>;
     }
 
+    const spotifyRegex = /https:\/\/open.spotify.com\/track\/([a-zA-Z0-9]+)(\?si=[a-zA-Z0-9]+)?/g;
+    let spotifyEmbed = null;
+
+    if (profile.favoriteSong || profile.favoriteSong.match(spotifyRegex)) {
+        spotifyEmbed = profile.favoriteSong.replace(
+            spotifyRegex,
+            `<iframe id="embed-iframe" style="border-radius:12px; margin-bottom: 15px;" src="https://open.spotify.com/embed/track/$1?utm_source=generator" width="100%" height="152" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture;" loading="lazy"></iframe>` 
+        );
+    }
+
     const handleLinkClick = (event) => {
         if (event.target.closest(`.${postStyles.heart}`)) {
           event.preventDefault();
@@ -67,11 +77,12 @@ const Profile = () => {
             <div className={styles.profile}>
                 <div className={styles.profileHeader}>
                 <h1 className={styles.username}>{profile.username}</h1>
-                {jwtDecode(Cookies.get('token')).username === profile.username && (
+                {Cookies.get('token') && jwtDecode(Cookies.get('token')).username === profile.username && (
                     <button className={styles.editButton} onClick={handleEditClick}>Edit</button>
                 )}
                 </div>
                 <h3 className={styles.bio}>{profile.bio ? profile.bio.trim() : "No bio exists of this person :("}</h3>
+                <div dangerouslySetInnerHTML={{ __html: spotifyEmbed }} />
             </div>
             <hr style={styles.hr}></hr>
             <div className={styles.masonrylayout}>

@@ -20,7 +20,7 @@ const EditProfile = () => {
                 });
                 const data = await response.json();
                 setProfile(data);
-                setSong(); // wip
+                setSong(data.favoriteSong);
                 setBio(data.bio);
             } catch (error) {
                 console.error("Error fetching profile:", error);
@@ -44,7 +44,7 @@ const EditProfile = () => {
             });
 
             if (!response.ok) {
-                console.error("Error updating profile:", response.statusText);
+                alert("Error updating profile:", response.statusText);
                 return;
             }
 
@@ -67,6 +67,7 @@ const EditProfile = () => {
             <label className={styles.label}>
                 Favorite Song
             </label>
+            <br></br>
             <input
                 type="text"
                 id="spotifyLink"
@@ -75,15 +76,18 @@ const EditProfile = () => {
                 className={styles.input}
                 autoComplete="off"
             />
+            <br></br>
             <label htmlFor="bio" className={styles.label}>
                 Bio
             </label>
+            <br></br>
             <textarea
                 id="bio"
                 value={bio}
                 onChange={(event) => setBio(event.target.value)}
                 className={styles.textarea}
             />
+            <br></br>
             <button type="submit" className={styles.button}>
                 Save
             </button>

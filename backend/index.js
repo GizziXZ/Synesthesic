@@ -131,6 +131,25 @@ app.post('/post/:id/like', async (req, res) => {
     }
 });
 
+app.put('/profile', upload.fields([{name: 'bio', maxCount: 1}, {name: 'spotifyLink', maxCount: 1}]), async (req, res) => {
+    try {
+        const token = req.headers.authorization.split(' ')[1];
+        if (!jwt.verify(token, config.secret)) return res.status(401).send('Invalid token');
+        const user = jwt.decode(token, config.secret).username;
+        const { bio, spotifyLink } = req.body;
+
+        if (!/https:\/\/open.spotify.com\/track\/([a-zA-Z0-9]+)(\?si=[a-zA-Z0-9]+)?/g.test(spotifyLink)) {
+            return res.status(400).send('Invalid Spotify link');
+        }
+
+        const updatedUser = await User.findOneAndUpdate({ username: user }, { bio, favoriteSong: spotifyLink });
+        res.status(200).json(updatedUser);
+    } catch (error) {
+        console.error(error);
+        return res.status(401).send(error.message);
+    }
+});
+
 app.listen(80, () => {
     console.log('Server started');
 });
