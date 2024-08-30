@@ -1,6 +1,6 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import { jwtDecode } from 'jwt-decode';
 import styles from './Profile.module.css';
@@ -12,7 +12,7 @@ const Profile = () => {
     const username = window.location.pathname.split('/')[2];
     const [profile, setProfile] = useState(null);
     const [posts, setPosts] = useState([]);
-
+    const navigate = useNavigate();
     useEffect(() => {
         const fetchPosts = async () => {
             try {
@@ -56,12 +56,21 @@ const Profile = () => {
         }
     }
 
+    const handleEditClick = () => {
+        navigate('/edit-profile');
+    }
+
     return (
         <div>
             <Header />
             {/* <img src={`data:${profile.image.mimetype};base64,${profile.image.buffer}`} alt={profile.username} className={styles.image} /> */}
             <div className={styles.profile}>
+                <div className={styles.profileHeader}>
                 <h1 className={styles.username}>{profile.username}</h1>
+                {jwtDecode(Cookies.get('token')).username === profile.username && (
+                    <button className={styles.editButton} onClick={handleEditClick}>Edit</button>
+                )}
+                </div>
                 <h3 className={styles.bio}>{profile.bio ? profile.bio.trim() : "No bio exists of this person :("}</h3>
             </div>
             <hr style={styles.hr}></hr>

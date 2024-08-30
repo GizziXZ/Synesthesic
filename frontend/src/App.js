@@ -8,6 +8,7 @@ import RegisterPage from './components/RegisterPage';
 import CreatePost from './components/CreatePost';
 import PostPage from './components/PostPage';
 import Profile from './components/Profile';
+import EditProfile from './components/EditProfile';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -42,6 +43,7 @@ function App() {
         <Route path="/create-post" element={<CreatePost />} />
         <Route path="/post/:id" element={<PostPage />} />
         <Route path="/user/:username" element={<Profile />} />
+        <Route path="/edit-profile" element={<EditProfile />} />
       </Routes>
     </Router>
   );

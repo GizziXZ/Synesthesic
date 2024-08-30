@@ -9,8 +9,20 @@
     border-radius: 10px;
 }
 
+
+.profileHeader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    position: relative;
+}
+
 .username {
     font-size: 1.5em;
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
     margin-top: 10px;
     margin-bottom: 0;
     color: #fff;
@@ -19,6 +31,20 @@
 .bio {
     font-size: 1.2em;
     color: #afafaf;
+}
+
+.editButton {
+    padding: 10px 20px;
+    border: 1px solid #000000;
+    border-radius: 5px;
+    background-color: #808080;
+    color: #000;
+    font-size: 1em;
+    font-family: monospace;
+    cursor: pointer;
+    position: absolute;
+    top: 10px;
+    right: 10px;
 }
 
 hr {
