@@ -7,6 +7,7 @@ import LoginPage from './components/LoginPage';
 import RegisterPage from './components/RegisterPage';
 import CreatePost from './components/CreatePost';
 import PostPage from './components/PostPage';
+import Profile from './components/Profile';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -40,6 +41,7 @@ function App() {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/create-post" element={<CreatePost />} />
         <Route path="/post/:id" element={<PostPage />} />
+        <Route path="/user/:username" element={<Profile />} />
       </Routes>
     </Router>
   );

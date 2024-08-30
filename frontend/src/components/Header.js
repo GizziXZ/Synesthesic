@@ -23,7 +23,7 @@ const Header = () => {
         {token ? (
           <>
             <a href="/create-post">Create</a>
-            <a>{jwtDecode(token).username}</a>
+            <a href={'/user/' + jwtDecode(token).username}>{jwtDecode(token).username}</a>
             <a href="#" onClick={handleLogout}>Logout</a>
           </>
         ) : (

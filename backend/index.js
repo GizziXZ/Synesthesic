@@ -20,6 +20,17 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors());
 
+app.get('/profile/:username', async (req, res) => {
+    try {
+        console.log(req.params.username)
+        const user = await User.findOne({ username: req.params.username }, { password: 0, _id: 0 });
+        res.status(200).json(user);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send(error.message);
+    }
+});
+
 app.get('/posts', async (req, res) => {
     try {
         const posts = await Post.find();

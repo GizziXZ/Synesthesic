@@ -5,7 +5,6 @@ import Heart from '@react-sandbox/heart';
 import Cookies from 'js-cookie';
 
 const Post = ({ id, image, title, username, createdAt, likes, liked }) => {
-  console.log(title, liked);
   const [isHearted, setIsHearted] = React.useState(liked);
   const [likeCount, setLikeCount] = React.useState(likes);
   const token = Cookies.get('token');
