@@ -12,6 +12,7 @@ const Profile = () => {
     const username = window.location.pathname.split('/')[2];
     const [profile, setProfile] = useState(null);
     const [posts, setPosts] = useState([]);
+    const [isFollowing, setIsFollowing] = useState(false);
     const navigate = useNavigate();
     useEffect(() => {
         const fetchPosts = async () => {
@@ -42,8 +43,24 @@ const Profile = () => {
                 console.error('Error fetching profile:', error);
             }
         };
+        const checkFollowStatus = async () => {
+            const token = Cookies.get('token');
+            if (!token) return;
+            try {
+                const response = await fetch(`http://localhost:80/following`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+                const data = await response.json();
+                setIsFollowing(data.following.includes(username));
+            } catch (error) {
+                console.error('Error checking follow status:', error);
+            }
+        };
         fetchProfile();
         fetchPosts();
+        checkFollowStatus();
     }, []);
 
     if (!profile) {
@@ -87,7 +104,7 @@ const Profile = () => {
                 return;
             }
 
-            alert('Successfully followed user!');
+            setIsFollowing(!isFollowing);
         } catch (error) {
             console.error('Error following user:', error);
         }
@@ -103,7 +120,11 @@ const Profile = () => {
                 {Cookies.get('token') && jwtDecode(Cookies.get('token')).username === profile.username ? (
                     <button className={styles.editButton} onClick={handleEditClick}>Edit</button>
                 ) : (
-                    <button className={styles.followButton} onClick={handleFollowClick}>Follow</button>
+                    isFollowing ? (
+                        <button className={styles.followedButton} onClick={handleFollowClick}>Followed</button>
+                    ) : (
+                        <button className={styles.followButton} onClick={handleFollowClick}>Follow</button>
+                    )
                 )}
                 </div>
                 <h3 className={styles.bio}>{profile.bio ? profile.bio.trim() : "No bio exists of this person :("}</h3>

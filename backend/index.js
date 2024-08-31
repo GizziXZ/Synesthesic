@@ -60,6 +60,19 @@ app.get('/post/:id', async (req, res) => {
     }
 });
 
+app.get('/following', async (req, res) => {
+    try {
+        const token = req.headers.authorization.split(' ')[1];
+        if (!jwt.verify(token, config.secret)) return res.status(401).send('Invalid token');
+        const user = jwt.decode(token, config.secret).username;
+        const following = await User.findOne({ username: user }, { following: 1, _id: 0 });
+        res.status(200).json(following);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send(error.message);
+    }
+});
+
 app.post('/register', async (req, res) => {
     if (await User.findOne({ username: req.body.username })) {
         return res.status(400).send('User already exists');

@@ -19,8 +19,8 @@ const Following = () => {
         }
   
         const username = jwtDecode(token).username;
-        try { // TODO - finish the following page + add the following route in the backend
-          const response = await fetch(`/following`, {
+        try {
+          const response = await fetch(`http://localhost:80/following`, {
             headers: {
               Authorization: `Bearer ${token}`,
             },
@@ -35,7 +35,7 @@ const Following = () => {
           console.error("Error fetching following list:", error);
         }
       };
-  
+
       fetchFollowing();
     }, [navigate]);
   
@@ -47,7 +47,7 @@ const Following = () => {
           <ul className={styles.followingList}>
             {following.map((user) => (
               <li key={user} className={styles.followingItem}>
-                <a href={`/profile/${user}`}>{user}</a>
+                <a href={`/user/${user}`}>{user}</a>
               </li>
             ))}
           </ul>
