@@ -172,9 +172,11 @@ app.post('/post/:id/like', async (req, res) => {
     try {
         const token = req.headers.authorization.split(' ')[1];
         const post = await Post.findOne({ id: req.params.id });
+        const user = await User.findOne({ username: post.username });
         if (!post) return res.status(404).send('Post not found');
         if (!jwt.verify(token, config.secret)) return res.status(401).send('Invalid token');
         if (req.body.like) {
+            if (user) user.notifications.push({ notificationType: 'like', notificationCauser: jwt.decode(token, config.secret).username, link: `/post/${post.id}` });
             post.likes++;
             post.likedBy.push(jwt.decode(token, config.secret).username);
         } else {
@@ -194,7 +196,12 @@ app.post('/post/:id/comment', async (req, res) => {
         if (!jwt.verify(req.headers.authorization.split(' ')[1], config.secret)) return res.status(401).send('Invalid token');
         if (!req.body || !req.body.text.trim()) return res.status(400).send('Comment text is required');
         const post = await Post.findOne({ id: req.params.id });
+        const user = await User.findOne({ username: post.username });
         if (!post) return res.status(404).send('Post not found');
+        if (user) {
+            user.notifications.push({ notificationType: 'comment', notificationCauser: jwt.decode(req.headers.authorization.split(' ')[1], config.secret).username, link: `/post/${post.id}` });
+            await user.save();
+        }
         post.comments.push({ username: jwt.decode(req.headers.authorization.split(' ')[1], config.secret).username, text: req.body.text, date: new Date() });
         await post.save();
         res.status(200).json(post);
@@ -212,6 +219,7 @@ app.post('/profile/:username/follow', async (req, res) => {
         if (!user) return res.status(404).send('User not found');
         if (!jwt.verify(token, config.secret)) return res.status(401).send('Invalid token');
         if (!user.followers.includes(jwt.decode(token, config.secret).username)) {
+            user.notifications.push({ notificationType: 'follow', notificationCauser: jwt.decode(token, config.secret).username });
             user.followers.push(jwt.decode(token, config.secret).username);
             follower.following.push(req.params.username);
         } else {

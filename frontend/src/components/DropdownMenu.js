@@ -7,6 +7,13 @@ const DropdownMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [notifications, setNotifications] = useState([]);
 
+  /* TODO LIST:
+    figure out why notifications aren't working
+    clear notifications after user clicks on them
+    add a red dot to the bell icon when there are unread notifications
+    the css for the dropdown menu could use some work
+  */
+
   useEffect(() => {
     const fetchNotifications = async () => {
         try {
@@ -20,7 +27,7 @@ const DropdownMenu = () => {
         data.forEach(notification => {
             if (notification.notificationType === 'follow') {
                 notification.message = `${notification.notificationCauser} followed you`;
-            } else if (notification.notificationType === 'like') { // TODO - add a link to the post on like and comment notifs
+            } else if (notification.notificationType === 'like') {
                 notification.message = `${notification.notificationCauser} liked your post`;
             } else if (notification.notificationType === 'comment') {
                 notification.message = `${notification.notificationCauser} commented on your post`;
@@ -45,8 +52,12 @@ const DropdownMenu = () => {
         <div className="dropdown__menu">
           {notifications.length > 0 ? (
             notifications.map((notification) => (
-              <div key={notification.id} className="dropdown__item">
-                {notification.message}
+                <div key={notification.id} className="dropdown__item">
+                {notification.link ? (
+                    <a href={notification.link}>{notification.message}</a>
+                ) : (
+                    <a>{notification.message}</a>
+                )}
               </div>
             ))
           ) : (

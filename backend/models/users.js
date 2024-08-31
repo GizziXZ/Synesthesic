@@ -12,10 +12,13 @@ const userSchema = new mongoose.Schema({
     notifications: {
         type: [
             {
-                id: Number,
                 notificationCauser: String, // username of the user who caused the notification
                 notificationType: String, // follow, like, comment
-                date: Date,
+                link: String, // link to the post
+                date: {
+                    type: Date,
+                    default: Date.now,
+                },
             }
         ],
         default: [],
