@@ -176,6 +176,21 @@ app.post('/post/:id/like', async (req, res) => {
     }
 });
 
+app.post('/post/:id/comment', async (req, res) => {
+    try {
+        if (!jwt.verify(req.headers.authorization.split(' ')[1], config.secret)) return res.status(401).send('Invalid token');
+        if (!req.body || !req.body.text.trim()) return res.status(400).send('Comment text is required');
+        const post = await Post.findOne({ id: req.params.id });
+        if (!post) return res.status(404).send('Post not found');
+        post.comments.push({ username: jwt.decode(req.headers.authorization.split(' ')[1], config.secret).username, text: req.body.text, date: new Date() });
+        await post.save();
+        res.status(200).json(post);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send(error.message);
+    }
+});
+
 app.post('/profile/:username/follow', async (req, res) => {
     try {
         const token = req.headers.authorization.split(' ')[1];

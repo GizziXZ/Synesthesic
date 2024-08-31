@@ -32,6 +32,16 @@ const postSchema = new mongoose.Schema({
         type: Number,
         default: 0,
     },
+    comments: {
+        type: [
+            {
+                username: String,
+                text: String,
+                date: Date,
+            },
+        ],
+        default: [],
+    },
     likedBy: {
         type: [String],
         default: [],

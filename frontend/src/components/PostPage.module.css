@@ -82,3 +82,47 @@
   border: #4e4e4e 1px solid;
   margin: 20px auto;
 }
+
+.commentSection {
+  margin-top: 20px;
+}
+
+.commentInput {
+  width: 90%;
+  height: 100px;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.commentButton {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.commentButton:hover {
+  background-color: #0056b3;
+}
+
+.commentsList {
+  margin-top: 20px;
+}
+
+.comment {
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+}
+
+.commentUsername {
+  font-weight: bold;
+}
+
+.commentDate {
+  font-size: 0.8em;
+  color: gray;
+}

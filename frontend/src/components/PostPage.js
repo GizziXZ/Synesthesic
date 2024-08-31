@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useNavigate } from 'react';
 import { useParams } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import { jwtDecode } from 'jwt-decode';
@@ -13,6 +13,8 @@ const PostPage = () => {
   const [isActive, setIsActive] = useState('');
   const [isHearted, setIsHearted] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
+  const [comments, setComments] = useState([]);
+  const [newComment, setNewComment] = useState('');
   const [isSpotifyLoaded, setIsSpotifyLoaded] = useState(false);
   const token = Cookies.get('token');
 
@@ -97,6 +99,37 @@ const PostPage = () => {
       }
     };
 
+    const handleCommentChange = (e) => {
+      setNewComment(e.target.value);
+    };
+  
+    const handleCommentSubmit = async (e) => {
+      e.preventDefault();
+      if (newComment.trim()) {
+        try {
+          const response = await fetch(`http://localhost:80/post/${id}/comment`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({ text: newComment }),
+          });
+    
+          if (!response.ok) {
+            console.error('Error adding comment:', response.statusText);
+            return;
+          }
+    
+          const updatedPost = await response.json();
+          setPost(updatedPost);
+          setNewComment('');
+        } catch (error) {
+          console.error('Error adding comment:', error);
+        }
+      }
+    };
+
   return (
     <div>
     <Header />
@@ -112,6 +145,28 @@ const PostPage = () => {
         <div dangerouslySetInnerHTML={{ __html: spotifyEmbed }} />
         <a className={styles.spotifyLink} href={post.spotifyLink}>Spotify</a>
         <p className={styles.username}>Posted by <a href={`/user/${post.username}`} style={{color: 'gray'}}>{post.username}</a></p>
+      </div>
+      <div className={styles.commentSection}>
+        <h2>Comments</h2>
+        <form onSubmit={handleCommentSubmit}>
+          <textarea
+            value={newComment}
+            onChange={handleCommentChange}
+            placeholder="Write a comment..."
+            className={styles.commentInput}
+          />
+          <button type="submit" className={styles.commentButton}>Post Comment</button>
+          <hr></hr>
+        </form>
+        <div className={styles.commentsList}>
+          {post.comments && post.comments.map((comment, index) => (
+            <div key={index} className={styles.comment}>
+              <p className={styles.commentUsername}>{comment.username}</p>
+              <p>{comment.text}</p>
+              <span className={styles.commentDate}>{moment(comment.date).fromNow()}</span>
+            </div>
+          ))}
+        </div>
       </div>
       </div>
     </div>
