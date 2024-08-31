@@ -4,14 +4,11 @@ import { faBell } from '@fortawesome/free-solid-svg-icons';
 import Cookies from 'js-cookie';
 
 const DropdownMenu = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isClosed, setIsClosed] = useState(false);
   const [notifications, setNotifications] = useState([]);
 
   /* TODO LIST:
-    figure out why notifications aren't working
-    clear notifications after user clicks on them
-    add a red dot to the bell icon when there are unread notifications
-    the css for the dropdown menu could use some work
+    avoid notifications for the user's own actions
   */
 
   useEffect(() => {
@@ -42,21 +39,39 @@ const DropdownMenu = () => {
   }, []);
 
   const toggleDropdown = () => {
-    setIsOpen(!isOpen);
+    setIsClosed(!isClosed);
+    if (!isClosed) { // technically the !isClosed is the opposite of what it's supposed to be but whatever i cba anymore
+        setNotifications([]);
+    } else {
+        const readNotifications = async () => {
+            try {
+                await fetch('http://localhost:80/notifications', {
+                    method: 'DELETE',
+                    headers: {
+                        Authorization: `Bearer ${Cookies.get('token')}`,
+                    },
+                });
+            } catch (error) {
+                console.error('Error clearing notifications:', error);
+            }
+        };
+        readNotifications();
+    }
   };
 
   return (
     <div className="dropdown">
     <FontAwesomeIcon onClick={toggleDropdown} icon={faBell} />
-      {isOpen && (
+    {notifications.length > 0 && <div className="red-dot" onClick={toggleDropdown}></div>}
+      {isClosed && (
         <div className="dropdown__menu">
           {notifications.length > 0 ? (
             notifications.map((notification) => (
                 <div key={notification.id} className="dropdown__item">
                 {notification.link ? (
-                    <a href={notification.link}>{notification.message}</a>
+                    <a href={notification.link} target="_blank" style={{color: 'black'}}>{notification.message}</a>
                 ) : (
-                    <a>{notification.message}</a>
+                    <a style={{color: 'black'}}>{notification.message}</a>
                 )}
               </div>
             ))

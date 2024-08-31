@@ -184,6 +184,7 @@ app.post('/post/:id/like', async (req, res) => {
             post.likedBy = post.likedBy.filter((user) => user !== jwt.decode(token, config.secret).username);
         }
         await post.save();
+        await user.save();
         res.status(200).json({ likes: post.likes });
     } catch (error) {
         console.error(error);
@@ -251,6 +252,20 @@ app.put('/profile', upload.fields([{name: 'bio', maxCount: 1}, {name: 'spotifyLi
     } catch (error) {
         console.error(error);
         return res.status(401).send(error.message);
+    }
+});
+
+app.delete('/notifications', async (req, res) => {
+    try {
+        const token = req.headers.authorization.split(' ')[1];
+        if (!jwt.verify(token, config.secret)) return res.status(401).send('Invalid token');
+        const user = await User.findOne({ username: jwt.decode(token, config.secret).username });
+        user.notifications = [];
+        await user.save();
+        res.status(200).send();
+    } catch (error) {
+        console.error(error);
+        res.status(500).send(error.message);
     }
 });
 
