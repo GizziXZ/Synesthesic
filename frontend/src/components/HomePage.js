@@ -25,7 +25,7 @@ const HomePage = () => {
         const data = await response.json();
         const token = Cookies.get('token');
         if (token) {
-          data.forEach((post) => {
+          data.posts.forEach((post) => {
             post.liked = post.likedBy.includes(jwtDecode(token).username);
           });
         }

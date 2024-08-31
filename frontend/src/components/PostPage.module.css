@@ -27,6 +27,20 @@
 .header {
   text-align: center;
   margin-bottom: 20px;
+  position: relative;
+}
+
+.heart {
+  position: absolute;
+  right: 0;
+  bottom: 25%;
+}
+
+.likes {
+  color: #ffffff9c;
+  position: absolute;
+  right: 7.5px;
+  bottom: 26%;
 }
 
 .image {
