@@ -20,6 +20,19 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors());
 
+app.get('/notifications', async (req, res) => {
+    try {
+        const token = req.headers.authorization.split(' ')[1];
+        if (!jwt.verify(token, config.secret)) return res.status(401).send('Invalid token');
+        const user = await User.findOne({ username: jwt.decode(token, config.secret).username });
+        const notifications = user.notifications;
+        res.status(200).json(notifications);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send(error.message);
+    }
+});
+
 app.get('/profile/:username', async (req, res) => {
     try {
         const user = await User.findOne({ username: req.params.username }, { password: 0, _id: 0 });

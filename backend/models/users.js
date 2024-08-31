@@ -9,6 +9,17 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    notifications: {
+        type: [
+            {
+                id: Number,
+                notificationCauser: String, // username of the user who caused the notification
+                notificationType: String, // follow, like, comment
+                date: Date,
+            }
+        ],
+        default: [],
+    },
     following: {
         type: [String],
         default: [],
