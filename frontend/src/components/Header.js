@@ -2,6 +2,7 @@ import React from 'react';
 import './Header.css';
 import Cookies from 'js-cookie';
 import { jwtDecode } from 'jwt-decode';
+import DropdownMenu from './DropdownMenu';
 
 const Header = () => {
   const [searchQuery, setSearchQuery] = React.useState('');
@@ -26,6 +27,11 @@ const Header = () => {
         </form>
       </div>
       <nav className="header__nav">
+        {token ? (
+          <a className="header__icon">
+            <DropdownMenu />
+          </a>
+        ) : null}
         <a href="/">Home</a>
         {token ? (
           <>
@@ -37,7 +43,6 @@ const Header = () => {
         ) : (
           <a href="/login">Login</a>
         )}
-        {/* <a href='/login'>Login</a> */}
       </nav>
     </header>
   );

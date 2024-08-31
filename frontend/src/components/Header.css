@@ -35,3 +35,35 @@
 .header__nav a:hover {
   color: #e60023;
 }
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.dropdown__toggle {
+  background: none;
+  border: none;
+  font-size: 1em;
+}
+
+.dropdown__menu {
+  display: block;
+  position: absolute;
+  background-color: white;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  right: 0; /* Align the dropdown to the right */
+}
+
+.dropdown__item {
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  color: black;
+}
+
+.dropdown__item:hover {
+  background-color: #f1f1f1;
+}
