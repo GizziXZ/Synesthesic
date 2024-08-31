@@ -16,7 +16,7 @@ body {
     justify-content: center;
     align-items: flex-start;
     padding: 16px;
-}
+} */
 
 .masonryItem {
     flex: 1 1 calc(33.333% - 16px);
@@ -26,24 +26,14 @@ body {
     text-decoration: none;
     text-decoration-color: none;
     color: inherit;
-} */
+}
 
 .masonryGrid {
   display: flex;
-  margin-left: -16px;
-  width: auto;
+  width: 100%;
 }
 
 .masonryGridColumn {
   padding: 16px;
   background-clip: padding-box;
-}
-
-.masonryItem {
-    flex: 1 1 calc(33.333% - 16px);
-    max-width: 15vw;
-    box-sizing: border-box;
-    margin-bottom: 16px;
-    text-decoration: none;
-    color: inherit;
 }

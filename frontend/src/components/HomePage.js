@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import styles from './HomePage.module.css';
 import postStyles from './Post.module.css';
@@ -10,6 +10,9 @@ import { jwtDecode } from 'jwt-decode';
 
 const HomePage = () => {
   const [posts, setPosts] = useState([]);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+  const observer = useRef();
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -22,7 +25,8 @@ const HomePage = () => {
             post.liked = post.likedBy.includes(jwtDecode(token).username);
           });
         }
-        setPosts(data);
+        setPosts((prevPosts) => [...prevPosts, ...data]);
+        setHasMore(data.length > 0);
       } catch (error) {
         console.error('Error fetching posts:', error);
       }
@@ -36,8 +40,19 @@ const HomePage = () => {
     }
   }
 
+  const lastPostElementRef = useCallback((node) => {
+    if (observer.current) observer.current.disconnect();
+    observer.current = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting && hasMore) {
+        console.log('Visible');
+        setPage((prevPage) => prevPage + 1);
+      }
+    });
+    if (node) observer.current.observe(node);
+  }, [hasMore]);
+
   const breakpointColumnsObj = {
-    default: 3,
+    default: 6,
     1100: 2,
     700: 1
   };
@@ -46,24 +61,42 @@ const HomePage = () => {
     <div>
       <Header />
       <Masonry breakpointCols={breakpointColumnsObj} className={styles.masonryGrid} columnClassName={styles.masonryGridColumn}>
-        {posts.map((post) => {
+        {posts.map((post, index) => {
           const imageUrl = `data:${post.image.mimetype};base64,${post.image.buffer}`;
-          return (
-            <Link to={`/post/${post.id}`} key={post.id} className={styles.masonryItem} onClick={handleLinkClick}>
-              <Post
-                id={post.id}
-                image={imageUrl}
-                title={post.title}
-                createdAt={post.createdAt}
-                spotifyLink={post.spotifyLink}
-                username={post.username}
-                likes={post.likes}
-                liked={post.liked}
-              />
-            </Link>
-          );
+          if (posts.length === index + 1) {
+            return (
+              <Link to={`/post/${post.id}`} className={styles.masonryItem} onClick={handleLinkClick} ref={lastPostElementRef}>
+                <Post
+                  id={post.id}
+                  image={imageUrl}
+                  title={post.title}
+                  createdAt={post.createdAt}
+                  spotifyLink={post.spotifyLink}
+                  username={post.username}
+                  likes={post.likes}
+                  liked={post.liked}
+                />
+              </Link>
+            );
+          } else {
+            return (
+              <Link to={`/post/${post.id}`} className={styles.masonryItem} onClick={handleLinkClick}>
+                <Post
+                  id={post.id}
+                  image={imageUrl}
+                  title={post.title}
+                  createdAt={post.createdAt}
+                  spotifyLink={post.spotifyLink}
+                  username={post.username}
+                  likes={post.likes}
+                  liked={post.liked}
+                />
+              </Link>
+            );
+          }
         })}
-      </Masonry>
+        </Masonry>
+        {!hasMore && <p className={styles.endMessage}>that's all, folks</p>}
     </div>
   );
 };

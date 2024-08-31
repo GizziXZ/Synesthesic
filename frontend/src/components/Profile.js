@@ -1,9 +1,11 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import Cookies from 'js-cookie';
 import { jwtDecode } from 'jwt-decode';
+import Cookies from 'js-cookie';
+import Masonry from 'react-masonry-css';
 import styles from './Profile.module.css';
+import masonryStyles from './HomePage.module.css';
 import postStyles from './Post.module.css';
 import Post from './Post';
 import Header from './Header';
@@ -132,6 +134,7 @@ const Profile = () => {
             </div>
             <hr style={styles.hr}></hr>
             <div className={styles.masonrylayout}>
+            <Masonry breakpointCols={{default: 6, 1100: 2, 700: 1}} className={masonryStyles.masonryGrid} columnClassName={masonryStyles.masonryGridColumn}>
             {posts.map((post) => {
             const imageUrl = `data:${post.image.mimetype};base64,${post.image.buffer}`;
             return (
@@ -149,6 +152,7 @@ const Profile = () => {
                 </Link>
             );
             })}
+            </Masonry>
             </div>
         </div>
     )

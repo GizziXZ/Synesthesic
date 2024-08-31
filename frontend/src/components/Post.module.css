@@ -7,6 +7,7 @@
   overflow: hidden;
   transition: transform 0.2s;
   position: relative;
+  margin-bottom: 16px;
 }
 
 .post:hover {

@@ -83,7 +83,7 @@ hr {
     margin-bottom: 25px;
 }
 
-.masonrylayout {
+/* .masonrylayout {
     display: flex;
     flex-wrap: wrap;
     gap: 16px;
@@ -100,4 +100,4 @@ hr {
     text-decoration: none;
     text-decoration-color: none;
     color: inherit;
-}
+} */
