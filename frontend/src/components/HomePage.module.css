@@ -2,7 +2,7 @@ body {
     background-color: #202020;
 }
 
-.gridContainer {
+/* .gridContainer {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 16px;
@@ -25,5 +25,25 @@ body {
     margin-bottom: 16px;
     text-decoration: none;
     text-decoration-color: none;
+    color: inherit;
+} */
+
+.masonryGrid {
+  display: flex;
+  margin-left: -16px;
+  width: auto;
+}
+
+.masonryGridColumn {
+  padding: 16px;
+  background-clip: padding-box;
+}
+
+.masonryItem {
+    flex: 1 1 calc(33.333% - 16px);
+    max-width: 15vw;
+    box-sizing: border-box;
+    margin-bottom: 16px;
+    text-decoration: none;
     color: inherit;
 }

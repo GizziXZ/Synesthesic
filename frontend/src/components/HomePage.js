@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styles from './HomePage.module.css';
 import postStyles from './Post.module.css';
+import Masonry from 'react-masonry-css'
 import Header from './Header';
 import Post from './Post';
 import Cookies from 'js-cookie';
@@ -35,10 +36,16 @@ const HomePage = () => {
     }
   }
 
+  const breakpointColumnsObj = {
+    default: 3,
+    1100: 2,
+    700: 1
+  };
+
   return (
     <div>
       <Header />
-      <div className={styles.masonrylayout}>
+      <Masonry breakpointCols={breakpointColumnsObj} className={styles.masonryGrid} columnClassName={styles.masonryGridColumn}>
         {posts.map((post) => {
           const imageUrl = `data:${post.image.mimetype};base64,${post.image.buffer}`;
           return (
@@ -56,7 +63,7 @@ const HomePage = () => {
             </Link>
           );
         })}
-      </div>
+      </Masonry>
     </div>
   );
 };
