@@ -4,7 +4,13 @@ import Cookies from 'js-cookie';
 import { jwtDecode } from 'jwt-decode';
 
 const Header = () => {
+  const [searchQuery, setSearchQuery] = React.useState('');
   const token = Cookies.get('token');
+
+  const handleSearch = (event) => {
+    event.preventDefault();
+    window.location.href = '/?search=' + encodeURIComponent(searchQuery);
+  }
 
   const handleLogout = () => {
     Cookies.remove('token');
@@ -15,7 +21,9 @@ const Header = () => {
     <header className="header">
       <a href="/" className="header__logo" >Synesthesic</a>
       <div className="header__search">
-        <input type="text" placeholder="Search" />
+        <form onSubmit={handleSearch}>
+        <input type="text" placeholder="Search" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}/>
+        </form>
       </div>
       <nav className="header__nav">
         <a href="/">Home</a>

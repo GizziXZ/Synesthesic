@@ -80,6 +80,31 @@ app.get('/following', async (req, res) => {
     }
 });
 
+app.get('/search', async (req, res) => {
+    try {
+        const query = req.query.q;
+        if (!query) {
+            return res.status(400).send('Query parameter is required');
+        }
+
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 10;
+        const skip = (page - 1) * limit;
+        
+        const regex = new RegExp(query, 'i'); // 'i' makes it case-insensitive
+        const search = { title: regex };
+
+        const posts = await Post.find(search).skip(skip).limit(limit);
+        const totalPosts = await Post.countDocuments(search);
+        const hasMore = skip + posts.length < totalPosts;
+
+        res.status(200).json({ posts, hasMore });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send(error.message);
+    }
+});
+
 app.post('/register', async (req, res) => {
     if (await User.findOne({ username: req.body.username })) {
         return res.status(400).send('User already exists');

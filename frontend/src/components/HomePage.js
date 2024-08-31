@@ -17,7 +17,11 @@ const HomePage = () => {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await fetch(`http://localhost:80/posts?page=${page}&limit=10`);
+        const params = new URLSearchParams(window.location.search);
+        const search = params.get('search') || '';
+        let response;
+        if (!search) response = await fetch(`http://localhost:80/posts?page=${page}&limit=10`);
+        else response = await fetch(`http://localhost:80/search?page=${page}&limit=10&q=${encodeURIComponent(search)}`);
         const data = await response.json();
         const token = Cookies.get('token');
         if (token) {
