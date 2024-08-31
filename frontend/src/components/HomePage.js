@@ -17,7 +17,7 @@ const HomePage = () => {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await fetch('http://localhost:80/posts');
+        const response = await fetch(`http://localhost:80/posts?page=${page}&limit=10`);
         const data = await response.json();
         const token = Cookies.get('token');
         if (token) {
@@ -25,14 +25,14 @@ const HomePage = () => {
             post.liked = post.likedBy.includes(jwtDecode(token).username);
           });
         }
-        setPosts((prevPosts) => [...prevPosts, ...data]);
-        setHasMore(data.length > 0);
+        setPosts((prevPosts) => [...prevPosts, ...data.posts]);
+        setHasMore(data.hasMore);
       } catch (error) {
         console.error('Error fetching posts:', error);
       }
     };
     fetchPosts();
-  }, []);
+  }, [page]);
 
   const handleLinkClick = (event) => {
     if (event.target.closest(`.${postStyles.heart}`)) {
@@ -44,7 +44,6 @@ const HomePage = () => {
     if (observer.current) observer.current.disconnect();
     observer.current = new IntersectionObserver((entries) => {
       if (entries[0].isIntersecting && hasMore) {
-        console.log('Visible');
         setPage((prevPage) => prevPage + 1);
       }
     });
@@ -96,7 +95,7 @@ const HomePage = () => {
           }
         })}
         </Masonry>
-        {!hasMore && <p className={styles.endMessage}>that's all, folks</p>}
+        {!hasMore && <p className={styles.endMessage}>-- that's all, folks --</p>}
     </div>
   );
 };

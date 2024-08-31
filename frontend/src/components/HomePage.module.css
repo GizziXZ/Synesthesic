@@ -37,3 +37,10 @@ body {
   padding: 16px;
   background-clip: padding-box;
 }
+
+.endMessage {
+  color: #ffffffa6;
+  text-align: center;
+  margin-bottom: 10px;
+  font-style: italic;
+}

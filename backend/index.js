@@ -32,8 +32,15 @@ app.get('/profile/:username', async (req, res) => {
 
 app.get('/posts', async (req, res) => {
     try {
-        const posts = await Post.find();
-        res.status(200).json(posts);
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 10;
+        const skip = (page - 1) * limit;
+
+        const posts = await Post.find().skip(skip).limit(limit);
+        const totalPosts = await Post.countDocuments();
+        const hasMore = skip + posts.length < totalPosts;
+
+        res.status(200).json({ posts, hasMore });
     } catch (error) {
         console.error(error);
         res.status(500).send(error.message);
