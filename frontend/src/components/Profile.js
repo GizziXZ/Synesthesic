@@ -140,7 +140,7 @@ const Profile = () => {
         }
     }
 
-    return ( // TODO - make modal close when clicking outside of it + after navigating to another user inside modal
+    return (
         <div>
             <Header />
             {/* <img src={`data:${profile.image.mimetype};base64,${profile.image.buffer}`} alt={profile.username} className={styles.image} /> */}
@@ -190,7 +190,10 @@ const Profile = () => {
                 <Modal title={modalTitle} onClose={() => setModalVisible(false)}>
                     <ul>
                         {modalData.map((user) => (
-                            <li key={user} style={{cursor: 'pointer'}} onClick={() => navigate(`/user/${user}`)}>{user}</li>
+                            <li key={user} style={{cursor: 'pointer'}} onClick={() => {
+                                navigate(`/user/${user}`)
+                                setModalVisible(false);
+                            }}>{user}</li>
                         ))}
                     </ul>
                 </Modal>

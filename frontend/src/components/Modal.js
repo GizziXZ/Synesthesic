@@ -2,8 +2,14 @@ import React from 'react';
 import styles from './Modal.module.css';
 
 const Modal = ({ title, children, onClose }) => {
+    const handleOverlayClick = (event) => {
+        if (event.target === event.currentTarget) {
+            onClose();
+        }
+    };
+
     return (
-        <div className={styles.modalOverlay}>
+        <div className={styles.modalOverlay} onClick={handleOverlayClick}>
             <div className={styles.modal}>
                 <div className={styles.modalHeader}>
                     <h2>{title}</h2>

@@ -105,7 +105,7 @@ app.get('/search', async (req, res) => {
         const skip = (page - 1) * limit;
         
         const regex = new RegExp(query, 'i'); // 'i' makes it case-insensitive
-        const search = { title: regex };
+        const search = { $or: [{ title: regex }, { username: regex }] }; // $or is a MongoDB operator, so we're using it here to search for either the title or the username
 
         const posts = await Post.find(search).skip(skip).limit(limit);
         const totalPosts = await Post.countDocuments(search);

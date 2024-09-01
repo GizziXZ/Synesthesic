@@ -20,7 +20,7 @@ const Header = () => {
     window.location.href = '/';
   }
 
-  return ( // NOTE - planning on removing "Following" from the header and just put it in the profile along with a "Followers" tab
+  return (
       <header className="header">
         <a href="/" className="header__logo" >Synesthesic</a>
         <div className="header__search">
@@ -45,7 +45,6 @@ const Header = () => {
           <a href="/">Home</a>
           {token ? (
             <>
-              <a href="/following">Following</a>
               <a href={'/user/' + jwtDecode(token).username}>{jwtDecode(token).username}</a>
               <a href="#" onClick={handleLogout}>Logout</a>
             </>
