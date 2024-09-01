@@ -9,12 +9,16 @@ import masonryStyles from './HomePage.module.css';
 import postStyles from './Post.module.css';
 import Post from './Post';
 import Header from './Header';
+import Modal from './Modal';
 
 const Profile = () => {
     const username = window.location.pathname.split('/')[2];
     const [profile, setProfile] = useState(null);
     const [posts, setPosts] = useState([]);
     const [isFollowing, setIsFollowing] = useState(false);
+    const [modalVisible, setModalVisible] = useState(false);
+    const [modalData, setModalData] = useState([]);
+    const [modalTitle, setModalTitle] = useState('');
     const navigate = useNavigate();
     useEffect(() => {
         const fetchPosts = async () => {
@@ -63,7 +67,7 @@ const Profile = () => {
         fetchProfile();
         fetchPosts();
         checkFollowStatus();
-    }, []);
+    }, [username]);
 
     if (!profile) {
         return <div></div>;
@@ -112,7 +116,31 @@ const Profile = () => {
         }
     }
 
-    return (
+    const handleFollowersClick = async () => {
+        try {
+            const response = await fetch(`http://localhost:80/profile/${username}/followers`);
+            const data = await response.json();
+            setModalData(data.followers);
+            setModalTitle('Followers');
+            setModalVisible(true);
+        } catch (error) {
+            console.error('Error fetching followers:', error);
+        }
+    }
+
+    const handleFollowingClick = async () => {
+        try {
+            const response = await fetch(`http://localhost:80/profile/${username}/following`);
+            const data = await response.json();
+            setModalData(data.following);
+            setModalTitle('Following');
+            setModalVisible(true);
+        } catch (error) {
+            console.error('Error fetching following:', error);
+        }
+    }
+
+    return ( // TODO - make modal close when clicking outside of it + after navigating to another user inside modal
         <div>
             <Header />
             {/* <img src={`data:${profile.image.mimetype};base64,${profile.image.buffer}`} alt={profile.username} className={styles.image} /> */}
@@ -131,6 +159,10 @@ const Profile = () => {
                 </div>
                 <h3 className={styles.bio}>{profile.bio ? profile.bio.trim() : "No bio exists of this person :("}</h3>
                 <div dangerouslySetInnerHTML={{ __html: spotifyEmbed }} />
+                <div className={styles.followInfo}>
+                    <h3 onClick={handleFollowersClick} style={{cursor: 'pointer'}}>Followers: {profile.followers.length}</h3>
+                    <h3 onClick={handleFollowingClick} style={{cursor: 'pointer'}}>Following: {profile.following.length}</h3>
+                </div>
             </div>
             <hr style={styles.hr}></hr>
             <div className={styles.masonrylayout}>
@@ -154,6 +186,15 @@ const Profile = () => {
             })}
             </Masonry>
             </div>
+            {modalVisible && (
+                <Modal title={modalTitle} onClose={() => setModalVisible(false)}>
+                    <ul>
+                        {modalData.map((user) => (
+                            <li key={user} style={{cursor: 'pointer'}} onClick={() => navigate(`/user/${user}`)}>{user}</li>
+                        ))}
+                    </ul>
+                </Modal>
+            )}
         </div>
     )
 }

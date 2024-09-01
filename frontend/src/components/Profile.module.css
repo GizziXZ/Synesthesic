@@ -10,6 +10,11 @@
     border-radius: 10px;
 }
 
+.followInfo {
+    display: flex;
+    gap: 300px;
+    color: gray;
+}
 
 .profileHeader {
     display: flex;
