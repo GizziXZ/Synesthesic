@@ -10,6 +10,9 @@ import PostPage from './components/PostPage';
 import Profile from './components/Profile';
 import EditProfile from './components/EditProfile';
 import Following from './components/Following';
+import LikedPosts from './components/LikedPosts';
+
+// alot of useless code here and in the other files in this folder but i'm too lazy to remove it
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -46,6 +49,7 @@ function App() {
         <Route path="/user/:username" element={<Profile />} />
         <Route path="/edit-profile" element={<EditProfile />} />
         <Route path="/following" element={<Following />} />
+        <Route path="/liked-posts" element={<LikedPosts />} />
       </Routes>
     </Router>
   );

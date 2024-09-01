@@ -118,6 +118,19 @@ app.get('/search', async (req, res) => {
     }
 });
 
+app.get('/liked-posts', async (req, res) => {
+    try { // might have to do the pages thing here too
+        const token = req.headers.authorization.split(' ')[1];
+        if (!jwt.verify(token, config.secret)) return res.status(401).send('Invalid token');
+        const user = jwt.decode(token, config.secret).username;
+        const posts = await Post.find({ likedBy: user });
+        res.status(200).json(posts);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send(error.message);
+    }
+});
+
 app.post('/register', async (req, res) => {
     if (await User.findOne({ username: req.body.username })) {
         return res.status(400).send('User already exists');
@@ -176,7 +189,7 @@ app.post('/post/:id/like', async (req, res) => {
         if (!post) return res.status(404).send('Post not found');
         if (!jwt.verify(token, config.secret)) return res.status(401).send('Invalid token');
         if (req.body.like) {
-            if (user) user.notifications.push({ notificationType: 'like', notificationCauser: jwt.decode(token, config.secret).username, link: `/post/${post.id}` });
+            if (user && jwt.decode(token, config.secret).username !== user.username) user.notifications.push({ notificationType: 'like', notificationCauser: jwt.decode(token, config.secret).username, link: `/post/${post.id}` });
             post.likes++;
             post.likedBy.push(jwt.decode(token, config.secret).username);
         } else {
@@ -199,7 +212,7 @@ app.post('/post/:id/comment', async (req, res) => {
         const post = await Post.findOne({ id: req.params.id });
         const user = await User.findOne({ username: post.username });
         if (!post) return res.status(404).send('Post not found');
-        if (user) {
+        if (user && jwt.decode(req.headers.authorization.split(' ')[1], config.secret).username !== user.username) {
             user.notifications.push({ notificationType: 'comment', notificationCauser: jwt.decode(req.headers.authorization.split(' ')[1], config.secret).username, link: `/post/${post.id}` });
             await user.save();
         }

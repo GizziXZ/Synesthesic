@@ -7,10 +7,6 @@ const DropdownMenu = () => {
   const [isClosed, setIsClosed] = useState(false);
   const [notifications, setNotifications] = useState([]);
 
-  /* TODO LIST:
-    avoid notifications for the user's own actions
-  */
-
   useEffect(() => {
     const fetchNotifications = async () => {
         try {

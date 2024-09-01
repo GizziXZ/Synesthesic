@@ -3,6 +3,8 @@ import './Header.css';
 import Cookies from 'js-cookie';
 import { jwtDecode } from 'jwt-decode';
 import DropdownMenu from './DropdownMenu';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPen, faHeart } from '@fortawesome/free-solid-svg-icons'; // the fa-what-now?
 
 const Header = () => {
   const [searchQuery, setSearchQuery] = React.useState('');
@@ -18,34 +20,41 @@ const Header = () => {
     window.location.href = '/';
   }
 
-  return (
-    <header className="header">
-      <a href="/" className="header__logo" >Synesthesic</a>
-      <div className="header__search">
-        <form onSubmit={handleSearch}>
-        <input type="text" placeholder="Search" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}/>
-        </form>
-      </div>
-      <nav className="header__nav">
-        {token ? (
-          <a className="header__icon">
-            <DropdownMenu />
-          </a>
-        ) : null}
-        <a href="/">Home</a>
-        {token ? (
-          <>
-            <a href="/following">Following</a>
-            <a href="/create-post">Create</a>
-            <a href={'/user/' + jwtDecode(token).username}>{jwtDecode(token).username}</a>
-            <a href="#" onClick={handleLogout}>Logout</a>
-          </>
-        ) : (
-          <a href="/login">Login</a>
-        )}
-      </nav>
-    </header>
-  );
+  return ( // NOTE - planning on removing "Following" from the header and just put it in the profile along with a "Followers" tab
+      <header className="header">
+        <a href="/" className="header__logo" >Synesthesic</a>
+        <div className="header__search">
+          <form onSubmit={handleSearch}>
+          <input type="text" placeholder="Search" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}/>
+          </form>
+        </div>
+        <nav className="header__nav">
+          {token ? (
+            <>
+              <a className="header__icon">
+                <DropdownMenu />
+              </a>
+              <a className="header__icon" href="/create-post">
+                <FontAwesomeIcon icon={faPen} />
+              </a>
+              <a href="/liked-posts">
+                <FontAwesomeIcon icon={faHeart} />
+              </a>
+            </>
+          ) : null}
+          <a href="/">Home</a>
+          {token ? (
+            <>
+              <a href="/following">Following</a>
+              <a href={'/user/' + jwtDecode(token).username}>{jwtDecode(token).username}</a>
+              <a href="#" onClick={handleLogout}>Logout</a>
+            </>
+          ) : (
+            <a href="/login">Login</a>
+          )}
+        </nav>
+      </header>
+    );
 };
 
 export default Header;
