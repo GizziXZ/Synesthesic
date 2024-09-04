@@ -14,8 +14,30 @@ so no more of that instagram 15 seconds crap when you know 15 seconds cant fit t
 ## Features
 
 * Scroll through a home feed almost exactly like pinterest's!
-* Create a post with your art and your favorite song provided
+* Create a post with your art and your favorite song provided (you can also choose the timestamp it will start at!)
 * Like posts and follow users if you like their posts!
 * Show off your favorite song on your profile
+
+## Hosting
+
+Create a `config.json` inside `backend` and use the following template
+```json
+{
+    "mongooseConnection":"mongodb+srv://yourmongo:dbserver@here.net/",
+    "secret":"insert a jwt secret here"
+}
+```
+
+Open a terminal and cd to `backend` and do the following commands
+```bash
+npm i
+node index.js
+```
+
+Open another terminal and cd to `frontend` and do the following commands
+```bash
+npm i
+npm start
+```
 
 #### Made with 💖 by Gizzi using React and Express
